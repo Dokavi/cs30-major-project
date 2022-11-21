@@ -1,10 +1,11 @@
 # Proposal
 
-Put a description of what you're going to do
+An RPG game with a turn-base mechanics fight similar to old final fantasy game.
 
 ## Needs To Have List
 
-- thing 1
+- Overworld Map
+-- thing 3
 - thing 2
 
 ## Nice To Have List
