@@ -1,3 +1,7 @@
+# Overview: RPG turn-base game like old Final Fantasy
+
+## Need To Have List
+
 ### Overworld Map: (Progress: 70% done in the grid base game project)
 - Character in overworld (using grid or outside grid)
 - Overworld map creates by grid and JSON
