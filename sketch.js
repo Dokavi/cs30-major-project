@@ -12,6 +12,31 @@
 // console.log(character.y);
 // console.log(character.x);
 
+class Button {
+  constructor(x,y,img,tempW,tempH,newState) {
+    this.x = x;
+    this.y = y;
+    this.image = img;
+    this.width = tempW;
+    this.height = tempH;
+    this.hoverColor = color(0,0,0,10);
+    this.change = newState;
+  }
+  display() {
+    if (this.isInside(mouseX,mouseY)) {
+      fill(this.hoverColor);
+      rect(this.x,this.y,this.width+2,this.height+2);
+    }
+    image(this.image,this.x,this.y,this.width,this.height);
+  }
+  changeState() {
+    state = this.change;
+  }
+  isInside(x,y) {
+    return x>=this.x && x<=this.x+this.width && y >= this.y && y <=this.y +this.height;
+  }
+}
+// grid variables
 const ROWS = 20;
 const COLS = 20;
 let grid;
@@ -27,6 +52,7 @@ let character = {
   maxHealthPoint: 100,
   healthPoint: 100,
 };
+// map variables
 let start, room1A;
 let room2A;
 let room3A;
@@ -44,47 +70,54 @@ let player;
 let yellow_dirt;
 let lair_stone;
 let goblin;
+// Battle state variables
 let areaState = "start";
 let walkable = [0,3];
 let playerWalk = ["player","player2"];
 let enemies = ["goblin"];
 let foes;
-let batteBackgroundGrass;
+//music
 let overWorldMusic;
-let newgame;
-let startingScreen;
+//background image
+let batteBackgroundGrass;
+let startingScreenImg;
+//dialogue
 let dialogue = "";
+// Button
+let newGame;
+let startButton;
 
 function preload() {
   //menu
-  newgame = loadImage("newgame.png");
-  startingScreen = loadImage("plainScene.png");
+  newGame = loadImage("assets/newgame.png");
+  startingScreenImg = loadImage("assets/plainScene.png");
   //overworld
-  start = loadJSON("startA.json"), room1A = loadJSON("room1A.json");
-  room2A = loadJSON("room2A.json");
-  room3A = loadJSON("room3A.json");
-  room4A = loadJSON("room4A.json");
-  north = loadImage("dirt_north_new.png");
-  west = loadImage("dirt_west_new.png");
-  south = loadImage("dirt_south_new.png");
-  east = loadImage("dirt_east_new.png");
-  grassTextures = loadImage("grass_1.png");
-  rock = loadImage("lab-rock_0.png");
-  yellow_dirt = loadImage("dirt_1_new.png");
-  lair_stone = loadImage("lair_1_old.png");
-  player = loadImage("human_new.png");
-  door = loadImage("entrance.png");
-  goblin = loadImage("goblin_new.png");
+  start = loadJSON("assets/startA.json"), room1A = loadJSON("assets/room1A.json");
+  room2A = loadJSON("assets/room2A.json");
+  room3A = loadJSON("assets/room3A.json");
+  room4A = loadJSON("assets/room4A.json");
+  north = loadImage("assets/dirt_north_new.png");
+  west = loadImage("assets/dirt_west_new.png");
+  south = loadImage("assets/dirt_south_new.png");
+  east = loadImage("assets/dirt_east_new.png");
+  grassTextures = loadImage("assets/grass_1.png");
+  rock = loadImage("assets/lab-rock_0.png");
+  yellow_dirt = loadImage("assets/dirt_1_new.png");
+  lair_stone = loadImage("assets/lair_1_old.png");
+  player = loadImage("assets/human_new.png");
+  door = loadImage("assets/entrance.png");
+  goblin = loadImage("assets/goblin_new.png");
   //battle
-  batteBackgroundGrass = loadImage("battleback1.png");
+  batteBackgroundGrass = loadImage("assets/battleback1.png");
   //music
-  overWorldMusic = loadSound("Woodland Fantasy.mp3");
+  overWorldMusic = loadSound("assets/Woodland Fantasy.mp3");
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   cellHeight = height/ROWS;
   cellWidth = width/COLS*0.7;
+  startButton = new Button(width*0.4,height*0.4,newGame,300,100,"overWorld");
   // state = "overWorld";
   if (areaState === "start") {
     grid = start;
@@ -108,8 +141,8 @@ function draw() {
 }
 
 function displayMenuscreen() {
-  image(startingScreen,0,0,width,height);
-  image(newgame,width*0.4,height*0.4,300,100);
+  image(startingScreenImg,0,0,width,height);
+  startButton.display();
 }
 
 function create2dArray(COLS, ROWS) {
@@ -198,8 +231,8 @@ function mousePressed() {
   console.log(mouseY/height);
   // escape menuscreen
   if (state === "menuScreen") {
-    if (mouseX >= width*0.4 && mouseX <=width*0.4 + 300 && mouseY >= height*0.4 && mouseY <=height*0.4 + 100) {
-      state = "overWorld";
+    if (startButton.isInside(mouseX,mouseY)) {
+      startButton.changeState();
       //play music
       overWorldMusic.play();
     }
