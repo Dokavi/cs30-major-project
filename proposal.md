@@ -1,6 +1,3 @@
-- Overworld Map
--- thing 3
-- thing 2
 ### Overworld Map: (Progress: 70% done in the grid base game project)
 - Character in overworld (using grid or outside grid)
 - Overworld map creates by grid and JSON
@@ -23,8 +20,6 @@
 
 ## Nice To Have List
 
-- other thing
-- other thing 2
 ### Overworld Map:
 - add NPC and NPC interaction
 - special environment effects (on battle scenes as well)
