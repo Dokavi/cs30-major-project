@@ -81,16 +81,21 @@ let overWorldMusic;
 //background image
 let batteBackgroundGrass;
 let startingScreenImg;
+let helpScreenImg;
 //dialogue
 let dialogue = "";
 // Button
 let newGame;
 let startButton;
+let helpButton;
+let redButtonImage;
 
 function preload() {
   //menu
   newGame = loadImage("assets/newgame.png");
   startingScreenImg = loadImage("assets/plainScene.png");
+  redButtonImage = loadImage("assets/buttonStock1.png");
+  helpScreenImg = loadImage("assets/blueframe2.png");
   //overworld
   start = loadJSON("assets/startA.json"), room1A = loadJSON("assets/room1A.json");
   room2A = loadJSON("assets/room2A.json");
@@ -118,6 +123,7 @@ function setup() {
   cellHeight = height/ROWS;
   cellWidth = width/COLS*0.7;
   startButton = new Button(width*0.4,height*0.4,newGame,300,100,"overWorld");
+  helpButton = new Button(width*0.4,height*0.55,redButtonImage,300,80,"helpBoard");
   // state = "overWorld";
   if (areaState === "start") {
     grid = start;
@@ -131,6 +137,10 @@ function draw() {
     displayMenuscreen();
     // escape menu in mousepress
   }
+  if (state === "helpBoard") {
+    displayHelpboard();
+    //escape via mousepress, keypress
+  }
   if (state === "overWorld") {
     displayGrid(grid);
     displayHUD();
@@ -143,6 +153,20 @@ function draw() {
 function displayMenuscreen() {
   image(startingScreenImg,0,0,width,height);
   startButton.display();
+  helpButton.display();
+}
+
+function displayHelpboard() {
+  image(helpScreenImg,0,0,width,height);
+  fill("grey");
+  textSize(75);
+  //main text
+  text("WASD to move around the map",width*0.05,height*0.32);
+  text("Defeat monster to level up",width*0.05,height*0.42);
+  text("and escape the dungeon",width*0.05,height*0.52);
+  //subtext
+  textSize(25);
+  text("press Q to get out",width*0.7,height*0.9);
 }
 
 function create2dArray(COLS, ROWS) {
@@ -236,6 +260,9 @@ function mousePressed() {
       //play music
       overWorldMusic.play();
     }
+    if (helpButton.isInside(mouseX,mouseY)) {
+      helpButton.changeState();
+    }
   }
   if (state === "battle") {
     dialogue = "kill him!";
@@ -282,6 +309,11 @@ function mouseDragged() {
 }
 
 function keyPressed() {
+  if (state === "helpBoard") {
+    if (key === "q") {
+      state = "menuScreen";
+    }
+  }
   //recreate grid
   if (key === "e") {
     grid = create2dArray(COLS, ROWS);
